@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {Link, useLocation} from 'react-router-dom'
-import { dummyProfileData } from '../assets/assets'
 import {CalendarIcon, ChevronRightIcon, DollarSignIcon, FileTextIcon, LayoutGridIcon, Loader2, LogOutIcon, MenuIcon, SettingsIcon, UserIcon, XIcon} from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 import api from '../api/axios'
@@ -20,6 +19,7 @@ const Sidebar = () => {
 
     // Close mobile sidebar on route change
     useEffect(()=>{
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setMobileOpen(false)
     },[pathname])
 

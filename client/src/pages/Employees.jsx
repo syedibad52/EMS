@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
-import { dummyEmployeeData, DEPARTMENTS } from "../assets/assets"
+import { Navigate } from "react-router-dom"
+import { useAuth } from "../context/AuthContext"
+import { DEPARTMENTS } from "../assets/assets"
 import { Plus, Search, X } from "lucide-react"
 import EmployeeCard from "../components/EmployeeCard"
 import EmployeeForm from "../components/EmployeeForm"
@@ -8,6 +10,9 @@ import api from "../api/axios"
 
 
 const Employees = () => {
+  const { user } = useAuth()
+  const isAdmin = user?.role === "ADMIN"
+
   const [employees, setEmployees] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("");
@@ -31,6 +36,10 @@ const Employees = () => {
   useEffect(()=>{
     fetchEmployees();
   },[fetchEmployees])
+
+  if (!isAdmin) {
+    return <Navigate to="/dashboard" replace />
+  }
 
   const filtered = employees.filter((emp)=> `${emp.firstName} ${emp.lastName} ${emp.position}`.toLowerCase().includes(search.toLowerCase()))
 

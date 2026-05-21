@@ -38,12 +38,28 @@ export const login = async (req, res) => {
 
         const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "7d"});
 
-        return res.json({ user: payload, token });
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
+
+        return res.json({ user: payload });
 
     } catch (error) {
         console.error("Login error:", error);
         return res.status(500).json({ error: "Login failed" });
     }
+}
+
+export const logout = (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+    });
+    return res.json({ success: true });
 }
 
 // Get session for employee and admin
