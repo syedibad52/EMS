@@ -42,6 +42,7 @@ export const login = async (req, res) => {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
             sameSite: "lax",
+            path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
@@ -58,6 +59,7 @@ export const logout = (req, res) => {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
+        path: "/",
     });
     return res.json({ success: true });
 }
